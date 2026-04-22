@@ -3,7 +3,7 @@ import { useSettings } from '../context/SettingsContext';
 import { useProducts, type Product } from '../context/ProductContext';
 import { useOrders } from '../context/OrderContext';
 import { 
-  LayoutDashboard, Folder, Database, Heart, FileText, Trash2, Search, Plus, MoreHorizontal, ChevronDown, Edit2
+  LayoutDashboard, Folder, Database, Heart, FileText, Trash2, Search, Plus, MoreHorizontal, ChevronDown, Edit2, Menu
 } from 'lucide-react';
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -22,6 +22,7 @@ const Admin: React.FC = () => {
   const { orders, updateOrderStatus } = useOrders();
   
   const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'orders' | 'page-home' | 'page-about' | 'page-contact'>('dashboard');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [localTitle, setLocalTitle] = useState(heroTitle);
   const [localSubtitle, setLocalSubtitle] = useState(heroSubtitle);
   const [localAboutText, setLocalAboutText] = useState(aboutText);
@@ -195,7 +196,16 @@ const Admin: React.FC = () => {
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999, backgroundColor: 'var(--bg-color)', display: 'flex', fontFamily: "'Poppins', sans-serif" }}>
       
       {/* SIDEBAR */}
-      <div style={{ width: '260px', backgroundColor: 'var(--primary-color)', height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ 
+        width: isSidebarOpen ? '260px' : '0px', 
+        backgroundColor: 'var(--primary-color)', 
+        height: '100%', 
+        display: 'flex', 
+        flexDirection: 'column',
+        transition: 'width 0.3s ease',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap'
+      }}>
         <div style={{ padding: '2rem 1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'white' }}>
           <img src="/src/assets/logo.png" alt="Logo" style={{ height: '30px', filter: 'brightness(0) invert(1)' }} />
           <span style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Swadishth Raja</span>
@@ -243,9 +253,17 @@ const Admin: React.FC = () => {
         
         {/* HEADER */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '2rem 3rem', borderBottom: '1px solid #e5e7eb', backgroundColor: 'var(--bg-color)' }}>
-          <h1 style={{ margin: 0, fontSize: '2rem', fontWeight: 700, color: 'var(--primary-color)' }}>
-            {activeTab === 'dashboard' ? 'Dashboard Management' : activeTab === 'products' ? 'Product Management' : activeTab === 'orders' ? 'Order Management' : 'System Settings'}
-          </h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <button 
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--primary-color)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
+              <Menu size={28} />
+            </button>
+            <h1 style={{ margin: 0, fontSize: '2rem', fontWeight: 700, color: 'var(--primary-color)' }}>
+              {activeTab === 'dashboard' ? 'Dashboard Management' : activeTab === 'products' ? 'Product Management' : activeTab === 'orders' ? 'Order Management' : 'System Settings'}
+            </h1>
+          </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
             <button style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'var(--accent-color)', color: 'var(--text-dark)', border: 'none', padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
               <Plus size={18} /> Assign Member
