@@ -14,13 +14,13 @@ const Navbar: React.FC = () => {
   return (
     <nav className="navbar">
       <div className="container nav-container">
-        <Link to="/" className="logo">
+        <Link to="/" className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <img src="/src/assets/logo.png" alt="Swadishth Raja Logo" className="logo-img" />
           <span className="logo-text">Swadishth Raja</span>
         </Link>
 
         <div className={`nav-links ${isOpen ? 'active' : ''}`}>
-          <Link to="/" onClick={() => setIsOpen(false)}>Home</Link>
+          <Link to="/" onClick={() => { setIsOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Home</Link>
           <a href="/#products" onClick={() => setIsOpen(false)}>Products</a>
           <Link to="/about" onClick={() => setIsOpen(false)}>About Us</Link>
           <Link to="/contact" onClick={() => setIsOpen(false)}>Contact</Link>

@@ -13,12 +13,16 @@ const ProductDetails: React.FC = () => {
   
   const [detailsOpen, setDetailsOpen] = useState(true);
   const [shippingOpen, setShippingOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string>('');
+
+  const product = products.find(p => p.id.toString() === id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [id]);
-
-  const product = products.find(p => p.id.toString() === id);
+    if (product) {
+      setSelectedImage(product.images && product.images.length > 0 ? product.images[0] : product.image);
+    }
+  }, [id, product]);
 
   if (!product) {
     return (
@@ -60,16 +64,45 @@ const ProductDetails: React.FC = () => {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem', marginBottom: '5rem' }}>
           
-          {/* Left Column - Image */}
-          <div style={{ position: 'relative', backgroundColor: '#fff', borderRadius: '12px', border: '1px solid #e0d5c1', padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
-            <img src={product.image} alt={product.name} style={{ maxWidth: '100%', maxHeight: '500px', objectFit: 'contain' }} />
-            <button style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: '#f1f5f9', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b' }}>
-              <Heart size={20} />
-            </button>
-            {product.soldOut && (
-              <span style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', backgroundColor: '#ef4444', color: 'white', padding: '0.4rem 1rem', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600 }}>
-                Sold Out
-              </span>
+          {/* Left Column - Image Gallery */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ position: 'relative', backgroundColor: '#fff', borderRadius: '12px', border: '1px solid #e0d5c1', padding: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <img src={selectedImage || product.image} alt={product.name} style={{ maxWidth: '100%', maxHeight: '300px', objectFit: 'contain' }} />
+              <button style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: '#f1f5f9', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#64748b' }}>
+                <Heart size={20} />
+              </button>
+              {product.soldOut && (
+                <span style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', backgroundColor: '#ef4444', color: 'white', padding: '0.4rem 1rem', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600 }}>
+                  Sold Out
+                </span>
+              )}
+            </div>
+            
+            {/* Thumbnails */}
+            {product.images && product.images.length > 1 && (
+              <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+                {product.images.map((img, idx) => (
+                  <div 
+                    key={idx} 
+                    onClick={() => setSelectedImage(img)}
+                    style={{ 
+                      width: '80px', 
+                      height: '80px', 
+                      borderRadius: '8px', 
+                      border: selectedImage === img ? '2px solid var(--accent-color)' : '1px solid #e2e8f0',
+                      cursor: 'pointer',
+                      overflow: 'hidden',
+                      flexShrink: 0,
+                      backgroundColor: '#fff',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <img src={img} alt={`${product.name} ${idx + 1}`} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover' }} />
+                  </div>
+                ))}
+              </div>
             )}
           </div>
 

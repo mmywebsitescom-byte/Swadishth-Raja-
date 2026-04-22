@@ -67,12 +67,16 @@ const Admin: React.FC = () => {
   const handleAddProduct = (e: React.FormEvent) => {
     e.preventDefault();
     
+    const imageArray = newProductImage.split(',').map(s => s.trim()).filter(Boolean);
+    const mainImage = imageArray.length > 0 ? imageArray[0] : '/images/hero_bg.png';
+
     if (editingProductId) {
       updateProduct(editingProductId, {
         name: newProductName,
         price: newProductPrice.startsWith('Rs.') || newProductPrice.startsWith('₹') ? newProductPrice : `₹${newProductPrice}`,
         oldPrice: newProductOldPrice ? (newProductOldPrice.startsWith('Rs.') || newProductOldPrice.startsWith('₹') ? newProductOldPrice : `₹${newProductOldPrice}`) : undefined,
-        image: newProductImage || '/images/hero_bg.png',
+        image: mainImage,
+        images: imageArray,
         weight: newProductWeight || undefined,
         description: newProductDescription || undefined
       });
@@ -82,7 +86,8 @@ const Admin: React.FC = () => {
         name: newProductName,
         price: `₹${newProductPrice}`,
         oldPrice: newProductOldPrice ? `₹${newProductOldPrice}` : undefined,
-        image: newProductImage || '/images/hero_bg.png',
+        image: mainImage,
+        images: imageArray,
         soldOut: false,
         weight: newProductWeight || undefined,
         description: newProductDescription || undefined
@@ -100,7 +105,7 @@ const Admin: React.FC = () => {
     setNewProductPrice(product.price.replace(/[^\d.]/g, ''));
     setNewProductOldPrice(product.oldPrice ? product.oldPrice.replace(/[^\d.]/g, '') : '');
     setNewProductWeight(product.weight || '');
-    setNewProductImage(product.image);
+    setNewProductImage(product.images ? product.images.join(', ') : product.image);
     setNewProductDescription(product.description || '');
     
     // Scroll to top of form
@@ -393,8 +398,8 @@ const Admin: React.FC = () => {
                     <input type="number" value={newProductOldPrice} onChange={(e) => setNewProductOldPrice(e.target.value)} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1' }} />
                   </div>
                   <div style={{ gridColumn: '1 / -1' }}>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: '#475569' }}>Image URL</label>
-                    <input type="text" value={newProductImage} onChange={(e) => setNewProductImage(e.target.value)} placeholder="e.g., /images/my_product.png or https://..." style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1' }} />
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: '#475569' }}>Image URLs (comma separated for multiple)</label>
+                    <input type="text" value={newProductImage} onChange={(e) => setNewProductImage(e.target.value)} placeholder="url1.png, url2.png..." style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #cbd5e1' }} />
                   </div>
                   <div style={{ gridColumn: '1 / -1' }}>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', color: '#475569' }}>Product Details / Description (Optional)</label>

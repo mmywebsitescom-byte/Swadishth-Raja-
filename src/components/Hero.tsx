@@ -16,16 +16,33 @@ const Hero: React.FC = () => {
     return () => clearInterval(interval);
   }, [heroImages]);
 
-  const currentImage = heroImages && heroImages.length > 0 
-    ? heroImages[currentImageIndex] 
-    : '/images/hero_bg.png';
-
   return (
     <section 
       className="hero" 
       id="home"
-      style={{ backgroundImage: `url('${currentImage}')` }}
     >
+      <div 
+        className="hero-slider" 
+        style={{ 
+          transform: `translateX(-${currentImageIndex * 100}vw)`,
+          width: `${(heroImages?.length || 1) * 100}vw` 
+        }}
+      >
+        {heroImages && heroImages.length > 0 ? (
+          heroImages.map((img, index) => (
+            <div 
+              key={index} 
+              className="hero-slide" 
+              style={{ backgroundImage: `url('${img}')`, width: '100vw' }} 
+            />
+          ))
+        ) : (
+          <div 
+            className="hero-slide" 
+            style={{ backgroundImage: `url('/images/hero_bg.png')`, width: '100vw' }} 
+          />
+        )}
+      </div>
       <div className="hero-overlay"></div>
       <div className="container hero-content">
         <h1 className="hero-title">{heroTitle}</h1>
