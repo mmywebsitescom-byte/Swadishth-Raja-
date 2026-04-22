@@ -21,40 +21,7 @@ interface ProductContextType {
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
-const initialProducts: Product[] = [
-  {
-    id: 1,
-    name: 'Shuddh Swad Elaichi Thekua',
-    oldPrice: 'Rs. 599.00',
-    price: 'Rs. 299.00',
-    image: '/images/product_thekua.png',
-    soldOut: true,
-  },
-  {
-    id: 2,
-    name: 'Shuddh Swad Elaichi Thekua 3 Combo',
-    oldPrice: 'Rs. 1,799.00',
-    price: 'Rs. 799.00',
-    image: '/images/product_thekua.png',
-    soldOut: true,
-  },
-  {
-    id: 3,
-    name: 'Shuddh Swad Jaggery Thekua',
-    oldPrice: 'Rs. 599.00',
-    price: 'Rs. 299.00',
-    image: '/images/product_thekua.png',
-    soldOut: true,
-  },
-  {
-    id: 4,
-    name: 'Shuddh Swad Jaggery Thekua 3 Combo',
-    oldPrice: 'Rs. 1,799.00',
-    price: 'Rs. 799.00',
-    image: '/images/product_thekua.png',
-    soldOut: true,
-  }
-];
+const initialProducts: Product[] = [];
 
 export const ProductProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>(() => {

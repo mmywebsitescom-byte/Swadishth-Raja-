@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
     <nav className="navbar">
       <div className="container nav-container">
         <Link to="/" className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <img src="/src/assets/logo.png" alt="Swadishth Raja Logo" className="logo-img" />
+          <img src="/logo.png" alt="Swadishth Raja Logo" className="logo-img" />
           <span className="logo-text">Swadishth Raja</span>
         </Link>
 
